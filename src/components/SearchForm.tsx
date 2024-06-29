@@ -1,9 +1,9 @@
-import { TSearchForm } from "../lib/types";
+import { SearchFormProps } from "./lib/types";
 
 export default function SearchForm({
   setSearchText,
   searchText,
-}) {
+} :SearchFormProps) {
   
   return (
     <form

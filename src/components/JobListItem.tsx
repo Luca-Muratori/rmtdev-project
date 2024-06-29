@@ -1,23 +1,12 @@
 import BookmarkIcon from "./BookmarkIcon";
+import { JobItemProps } from "./lib/types";
 
-type JobItem={
-  badgeLetters:string;
-  id:number;
-  title:string;
-  company:string;
-  date:string;
-  relevanceScore:number;
-  daysAgo:number
-}
 
-type JobItemProps={
-  jobItem:JobItem
-}
 
 export default function JobListItem({jobItem}: JobItemProps) {
   return (
     <li className="job-item">
-      <a className="job-item__link">
+      <a href={`#${jobItem.id}`}className="job-item__link">
         <div className="job-item__badge">{jobItem.badgeLetters}</div>
 
         <div className="job-item__middle">
