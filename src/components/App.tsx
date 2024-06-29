@@ -3,19 +3,25 @@ import Background from "./Background";
 import Container from "./Container";
 import Footer from "./Footer";
 import Header from "./Header";
-import { useActiveId, useJobItem, useJobItems } from "./lib/hooks";
-import { JobItemExpanded } from "./lib/types";
+import { useDebounce, useJobItems } from "./lib/hooks";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const [ jobItems, isLoading ] = useJobItems(searchText);
+  const debouncedSearchText=useDebounce(searchText, 250)
+  const { jobItemsSliced, isLoading, totalNumberOfResults } =
+    useJobItems(debouncedSearchText);
+
 
 
   return (
     <>
       <Background />
       <Header searchText={searchText} setSearchText={setSearchText} />
-      <Container jobItems={jobItems} isLoading={isLoading} />
+      <Container
+        jobItems={jobItemsSliced}
+        isLoading={isLoading}
+        totalNumberOfResults={totalNumberOfResults}
+      />
       <Footer />
     </>
   );

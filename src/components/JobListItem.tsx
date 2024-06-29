@@ -3,9 +3,9 @@ import { JobItemProps } from "./lib/types";
 
 
 
-export default function JobListItem({jobItem}: JobItemProps) {
+export default function JobListItem({jobItem, isActive}: JobItemProps) {
   return (
-    <li className="job-item">
+    <li className={`job-item ${isActive ? 'job-item--active' : ''}`}>
       <a href={`#${jobItem.id}`}className="job-item__link">
         <div className="job-item__badge">{jobItem.badgeLetters}</div>
 

@@ -22,11 +22,13 @@ export type JobItemExpanded = JobItem & {
 
 export type JobItemProps = {
   jobItem: JobItem;
+  isActive:boolean
 };
 
 export type ContainerProps = {
   jobItems: JobItem[];
   isLoading: boolean;
+  totalNumberOfResults:number
 };
 
 export type HeaderProps = {
@@ -39,4 +41,8 @@ export type SearchFormProps = {
   searchText: string;
 };
 
-export type SidebarProps = { jobItems: JobItem[]; isLoading: boolean };
+export type SidebarProps = { jobItems: JobItem[]; isLoading: boolean, totalNumberOfResults:number };
+
+export type ResultsCountProp={
+  totalNumberOfResults:number
+}
