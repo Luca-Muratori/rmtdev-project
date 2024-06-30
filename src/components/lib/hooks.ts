@@ -1,7 +1,34 @@
 import { useEffect, useState } from "react";
-import { JobItem } from "./types";
+import { JobItem, JobItemApiResponse } from "./types";
 import { BASE_API_URL } from "./contants";
 import { useQuery } from "@tanstack/react-query";
+
+const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
+  const response = await fetch(`${BASE_API_URL}/${id}`);
+  if(!response.ok){
+    const errorData=await response.json()
+    throw new Error(errorData.description)
+  }
+  const data = await response.json();
+  return data;
+};
+
+export function useJobItem(id: number | null) {
+  const { data, isInitialLoading } = useQuery(
+    ["job-item", id],
+    () => (id ? fetchJobItem(id) : null),
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !id ? false : true,
+      onError: (error) => {console.log(error)},
+    }
+  );
+  const isLoading=isInitialLoading
+  const jobItem = data?.jobItem;
+  return { jobItem, isLoading } as const;
+}
 
 export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
@@ -48,26 +75,6 @@ export function useJobItems(searchText: string) {
 //   }, [id]);
 //   return { jobItem, isLoading } as const;
 // }
-
-export function useJobItem(id: number | null) {
-  const { data, isLoading } = useQuery(
-    ["job-item", id],
-    async () => {
-      const response = await fetch(`${BASE_API_URL}/${id}`);
-      const data = await response.json();
-      return data;
-    },
-    {
-      staleTime: 1000 * 60 * 60,
-      refetchOnWindowFocus: false,
-      retry: false,
-      enabled: !id ? false : true,
-      onError: () => {},
-    }
-  );
-  const jobItem = data?.jobItem;
-  return { jobItem, isLoading } as const;
-}
 
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);

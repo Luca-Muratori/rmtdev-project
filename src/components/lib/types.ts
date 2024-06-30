@@ -46,3 +46,8 @@ export type SidebarProps = { jobItems: JobItem[]; isLoading: boolean, totalNumbe
 export type ResultsCountProp={
   totalNumberOfResults:number
 }
+
+export type JobItemApiResponse={
+  public:boolean,
+  jobItem:JobItemExpanded
+}
