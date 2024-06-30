@@ -1,23 +1,35 @@
-import { SortingProps } from "./lib/types";
+import { SortingButtonProps, SortingProps } from "./lib/types";
 
 export default function Sorting({ handleSortBy, sortBy }: SortingProps) {
   return (
     <section className="sorting">
       <i className="fa-solid fa-arrow-down-short-wide"></i>
 
-      <button
-        className={`sorting__button sorting__button--relevant ${sortBy ==='relevant'? 'sorting__button--active':''}`}
+      <SortingButton
         onClick={() => handleSortBy("relevant")}
+        isActive={sortBy === "relevant"}
       >
         Relevant
-      </button>
-
-      <button
-        className={`sorting__button sorting__button--relevant ${sortBy ==='recent'? 'sorting__button--active':''}`}
+      </SortingButton>
+      <SortingButton
         onClick={() => handleSortBy("recent")}
+        isActive={sortBy === "recent"}
       >
         Recent
-      </button>
+      </SortingButton>
     </section>
+  );
+}
+
+function SortingButton({ children, onClick, isActive }: SortingButtonProps) {
+  return (
+    <button
+      className={`sorting__button sorting__button--relevant ${
+        isActive ? "sorting__button--active" : ""
+      }`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }

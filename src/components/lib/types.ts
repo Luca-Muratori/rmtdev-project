@@ -29,11 +29,11 @@ export type ContainerProps = {
   jobItems: JobItem[];
   isLoading: boolean;
   totalNumberOfResults: number;
-  onClick: (direction:'next'| 'previous') => void;
-  currentPage:number;
-  totalNumberOfPages:number;
-  handleSortBy:(newSort:'relevant'|'recent')=>void;
-  sortBy:string
+  onClick: (direction: PageDirection) => void;
+  currentPage: number;
+  totalNumberOfPages: number;
+  handleSortBy: (newSort: "relevant" | "recent") => void;
+  sortBy: string;
 };
 
 export type HeaderProps = {
@@ -50,11 +50,11 @@ export type SidebarProps = {
   jobItems: JobItem[];
   isLoading: boolean;
   totalNumberOfResults: number;
-  onClick: (direction:'next'| 'previous') => void;
-  currentPage:number;
-  totalNumberOfPages:number;
-  handleSortBy:(newSort:'relevant'|'recent')=>void;
-  sortBy:string
+  onClick: (direction: PageDirection) => void;
+  currentPage: number;
+  totalNumberOfPages: number;
+  handleSortBy: (newSort: "relevant" | "recent") => void;
+  sortBy: string;
 };
 
 export type ResultsCountProp = {
@@ -71,18 +71,23 @@ export type JobItemsAPIResponse = {
   jobItems: JobItem[];
 };
 export type PaginationProps = {
-  onClick:(direction:'next'| 'previous')=>void;
-  currentPage:number;
-  totalNumberOfPages:number
+  onClick: (direction: PageDirection) => void;
+  currentPage: number;
+  totalNumberOfPages: number;
 };
 export type PaginationButtonProps = {
-  currentPage:number;
-  direction:string;
-  onClickPage:() => void;
+  currentPage: number;
+  direction: string;
+  onClickPage: () => void;
 };
 export type SortingProps = {
-  handleSortBy:(newSort:'relevant'|'recent')=>void;
-  sortBy:string
+  handleSortBy: (newSort: SortByType) => void;
+  sortBy: SortByType;
 };
-export type SortByType ='relevant'|'recent'
-
+export type SortingButtonProps = {
+  children:React.ReactNode;
+  onClick:()=>void;
+  isActive:boolean
+};
+export type SortByType = "relevant" | "recent";
+export type PageDirection = "next" | "previous";
