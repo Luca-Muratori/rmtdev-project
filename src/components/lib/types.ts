@@ -6,7 +6,7 @@ export type JobItem = {
   date: string;
   relevanceScore: number;
   daysAgo: number;
-  description:string
+  description: string;
 };
 
 export type JobItemExpanded = JobItem & {
@@ -22,13 +22,18 @@ export type JobItemExpanded = JobItem & {
 
 export type JobItemProps = {
   jobItem: JobItem;
-  isActive:boolean
+  isActive: boolean;
 };
 
 export type ContainerProps = {
   jobItems: JobItem[];
   isLoading: boolean;
-  totalNumberOfResults:number
+  totalNumberOfResults: number;
+  onClick: (direction:'next'| 'previous') => void;
+  currentPage:number;
+  totalNumberOfPages:number;
+  handleSortBy:(newSort:'relevant'|'recent')=>void;
+  sortBy:string
 };
 
 export type HeaderProps = {
@@ -41,13 +46,43 @@ export type SearchFormProps = {
   searchText: string;
 };
 
-export type SidebarProps = { jobItems: JobItem[]; isLoading: boolean, totalNumberOfResults:number };
+export type SidebarProps = {
+  jobItems: JobItem[];
+  isLoading: boolean;
+  totalNumberOfResults: number;
+  onClick: (direction:'next'| 'previous') => void;
+  currentPage:number;
+  totalNumberOfPages:number;
+  handleSortBy:(newSort:'relevant'|'recent')=>void;
+  sortBy:string
+};
 
-export type ResultsCountProp={
-  totalNumberOfResults:number
-}
+export type ResultsCountProp = {
+  totalNumberOfResults: number;
+};
 
-export type JobItemApiResponse={
-  public:boolean,
-  jobItem:JobItemExpanded
-}
+export type JobItemApiResponse = {
+  public: boolean;
+  jobItem: JobItemExpanded;
+};
+export type JobItemsAPIResponse = {
+  public: boolean;
+  sorted: boolean;
+  jobItems: JobItem[];
+};
+export type PaginationProps = {
+  onClick:(direction:'next'| 'previous')=>void;
+  currentPage:number;
+  totalNumberOfPages:number
+};
+export type PaginationButtonProps = {
+  currentPage:number;
+  direction:string;
+  onClickPage:() => void;
+};
+export type SortingProps = {
+  handleSortBy:(newSort:'relevant'|'recent')=>void;
+  sortBy:string
+};
+export type SortByType ='relevant'|'recent'
+
