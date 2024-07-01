@@ -3,7 +3,7 @@ import { JobItem, JobItemApiResponse, JobItemsAPIResponse } from "./types";
 import { BASE_API_URL } from "./contants";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { handleError} from "./utils";
+import { handleError } from "./utils";
 
 const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
   const response = await fetch(`${BASE_API_URL}/${id}`);
@@ -53,7 +53,7 @@ export function useJobItems(searchText: string) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(searchText),
-      onError:handleError
+      onError: handleError,
     }
   );
   const jobItems = data?.jobItems;
@@ -132,4 +132,16 @@ export function useActiveId() {
     };
   }, []);
   return activeId;
+}
+
+export function useLocalStorage<T>(key: string, initialValue: T):[T,React.Dispatch<React.SetStateAction<T>>] {
+  const bookmarkedIdsFromLocalStorage = JSON.parse(
+    localStorage.getItem(key) || JSON.stringify(initialValue)
+  );
+  const [value, setValue] = useState(bookmarkedIdsFromLocalStorage);
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]);
+  return [value, setValue] as const;
 }

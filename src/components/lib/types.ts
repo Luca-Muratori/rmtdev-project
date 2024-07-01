@@ -89,5 +89,10 @@ export type SortingButtonProps = {
   onClick:()=>void;
   isActive:boolean
 };
+
+export type BookmarkIconProps={
+  id:number
+}
+
 export type SortByType = "relevant" | "recent";
 export type PageDirection = "next" | "previous";

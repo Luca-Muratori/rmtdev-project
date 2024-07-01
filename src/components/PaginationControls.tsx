@@ -1,5 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { PaginationButtonProps, PaginationProps } from "./lib/types";
+import { useLocalStorage } from "./lib/hooks";
 
 export default function Pagination({
   onClick,

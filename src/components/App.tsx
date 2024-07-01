@@ -42,6 +42,8 @@ function App() {
     setCurrentPage(1)
     setSortBy(newSortBy);
   };
+
+ 
   return (
     <>
       <Background />
