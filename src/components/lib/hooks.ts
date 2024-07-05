@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { JobItem, JobItemApiResponse, JobItemsAPIResponse } from "./types";
+import { useContext, useEffect, useState } from "react";
+import { JobItem, JobItemApiResponse, JobItemExpanded, JobItemsAPIResponse } from "./types";
 import { BASE_API_URL } from "./contants";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { handleError } from "./utils";
+import { BookmarksContext } from "../../contexts/BookmarksContextProvider";
+import { ActiveIdContext } from "../../contexts/ActiveIdContextProvider";
 
 const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
   const response = await fetch(`${BASE_API_URL}/${id}`);
@@ -44,7 +46,7 @@ const fetchJobItems = async (
   return data;
 };
 
-export function useJobItems(searchText: string) {
+export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
     ["job-items", searchText],
     () => (searchText ? fetchJobItems(searchText) : null),
@@ -134,7 +136,10 @@ export function useActiveId() {
   return activeId;
 }
 
-export function useLocalStorage<T>(key: string, initialValue: T):[T,React.Dispatch<React.SetStateAction<T>>] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] {
   const bookmarkedIdsFromLocalStorage = JSON.parse(
     localStorage.getItem(key) || JSON.stringify(initialValue)
   );
@@ -144,4 +149,61 @@ export function useLocalStorage<T>(key: string, initialValue: T):[T,React.Dispat
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
   return [value, setValue] as const;
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw new Error("blablabla");
+  }
+  return context;
+}
+
+export function useJobItems(ids: number[]) {
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-items", id],
+      queryFn: () => fetchJobItem(id),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: handleError,
+    })),
+  });
+
+  const jobItems = results
+    .map((result) => result.data?.jobItem)
+    // .filter((jobItem) => jobItem !== undefined);
+    .filter(jobItem=>Boolean(jobItem)) as JobItemExpanded[]
+  const isLoading = results.some((result) => result.isLoading);
+  return { jobItems, isLoading };
+}
+
+
+export function useOnClickOutside(refs: React.RefObject<HTMLElement>[], handler:()=>void){
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (
+        //e.target instanceof HTMLElement &&
+        // !buttonRef.current?.contains(e.target) &&
+        // !popOverRef.current?.contains(e.target)
+        refs.every((ref)=>!ref.current?.contains(e.target as Node))
+      ) {
+        handler()
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [ refs, handler]);
+}
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw new Error("blablabla");
+  }
+  return context;
 }

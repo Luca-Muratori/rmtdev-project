@@ -1,3 +1,5 @@
+import React from "react";
+
 export type JobItem = {
   badgeLetters: string;
   id: number;
@@ -92,6 +94,20 @@ export type SortingButtonProps = {
 
 export type BookmarkIconProps={
   id:number
+}
+export type BookmarksContextProviderProp={
+  children:React.ReactNode
+}
+export type BookmarkContext={
+  bookmarkedIds:number[];
+  handleToggleBookmark:(id:number)=>void;
+  bookmarkedJobItems:JobItemExpanded[];
+  isLoading:boolean
+
+}
+export type ActiveIdContextProp={
+  activeId:number|null
+
 }
 
 export type SortByType = "relevant" | "recent";

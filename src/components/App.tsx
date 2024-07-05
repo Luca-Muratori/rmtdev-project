@@ -3,7 +3,7 @@ import Background from "./Background";
 import Container from "./Container";
 import Footer from "./Footer";
 import Header from "./Header";
-import { useDebounce, useJobItems } from "./lib/hooks";
+import { useDebounce, useSearchQuery } from "./lib/hooks";
 import { Toaster } from "react-hot-toast";
 import { RESULT_PER_PAGE } from "./lib/contants";
 import { PageDirection, SortByType } from "./lib/types";
@@ -11,7 +11,7 @@ import { PageDirection, SortByType } from "./lib/types";
 function App() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 250);
-  const { jobItems, isLoading } = useJobItems(debouncedSearchText);
+  const { jobItems, isLoading } = useSearchQuery(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortByType>("relevant");
 
